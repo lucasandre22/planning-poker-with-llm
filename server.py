@@ -1,31 +1,33 @@
 from flask import Flask, request
 from flask import send_from_directory
 from flask_cors import CORS
+import main
 import os
-from main import search_for_similar_tickets, get_response_based_on_ticket
 
 app = Flask(__name__)
 CORS(app)
-PORT = 8001
+PORT = 8080
 
-PATH = "../frontend"
+PATH = "frontend"
+VERSION = "v1"
 
 @app.route('/')
 def index():
     return send_from_directory(PATH, 'index.html')
 
-@app.route('/similarity_search', methods=['POST'])
-def search_database():
-    query = request.json['query']
-    response = search_for_similar_tickets(query)
-    return {response}
+@app.route('/<path:filename>')
+def send_report(filename):
+    return send_from_directory(PATH, filename)
 
-@app.route('/get_response', methods=['POST'])
-def get_response_based():
+@app.route(f'/{VERSION}/get-output', methods=['POST'])
+def jql_query():
     ticket = request.json['ticket']
-    response = get_response_based_on_ticket(str(ticket))
-    return { "response": response }
+    return main.get_response_based_on_ticket(ticket)
 
+@app.route(f'/{VERSION}/ask-question', methods=['POST'])
+def chat():
+    question = request.json['question']
+    return main.get_response_from_question(question)
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=PORT)

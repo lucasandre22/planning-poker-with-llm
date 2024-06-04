@@ -1,0 +1,74 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: hsl(122, 99%, 28%);
+    color: white;
+    text-align: center;
+    padding: 1em 0;
+}
+
+h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.ticket-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+.chat {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}
+
+
+.ticket {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+    padding: 20px;
+    width: 300px;
+}
+
+.ticket h2 {
+    margin-top: 0;
+}
+
+.estimate {
+    margin-top: 10px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    margin-top: 50%;
+}
+
+
+.estimate-btn {
+    border: 3px solid #4CAF50;
+    color: #4CAF50;
+    padding: 10px 15px;
+    margin: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+    height: 70px;
+}
+
+
+.estimate-btn:hover {
+    background-color: white;
+}
