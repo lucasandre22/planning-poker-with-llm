@@ -11,8 +11,29 @@ TICKETS_PROMPT = PromptTemplate(
     Ticket to estimate: \n\n {ticket} \n\n
 
     List of similar tickets: \n\n {similar_tickets} \n\n
-    
+
     Your response:
+
+    """,
+    input_variables=["ticket", "similar_tickets"]
+)
+
+TICKETS_SIMILARITY = PromptTemplate(
+    template="""
+    You are an AI assistant helping a team estimate a new ticket. The team has identified three similar tickets that can provide context for the new ticket. Based on the details of the similar tickets, provide considerations and guidance for estimating the new ticket.
+    The team works in many development projects.
+
+    New Ticket:\n
+    {new_ticket}\n
+
+    Similar Tickets:\n
+    {similar_tickets}\n\n
+
+    Please provide:
+    - A summary of key similarities and differences between the tickets.
+    - Important factors to consider based on the similar tickets.
+    - Potential challenges and complexities that might affect the estimation.
+    - Any additional guidance to help the team make an accurate estimation.
 
     """,
     input_variables=["ticket", "similar_tickets"]
