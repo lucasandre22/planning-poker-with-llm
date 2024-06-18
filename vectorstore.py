@@ -2,12 +2,16 @@ import os
 from langchain.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_community.document_loaders import JSONLoader
+from ticket_handling import build_ticket_text_from_list
 import json
 
 # Use the sentence transformer package with the all-MiniLM-L6-v2 embedding model
 EMBEDDINGS = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
-database = None
+DATABASE = None
+
+DATABASE_LOCATION = "/mnt/d/Git/trabalho-metologias-ageis/documents/tickets.jsonl"
+DATABASE_NAME = "tickets_database"
 
 def load_db_from_json_lines(file_path, db_name, json_lines=True):
     """Load or create a vector local json lines database by reading the file specified in file_path.
@@ -35,18 +39,21 @@ def load_db_from_json_lines(file_path, db_name, json_lines=True):
         db.save_local(db_name)
         return db
     
-def search_for_similar_tickets(text_to_search) -> list[str]:
-    global database
-    if(database is None):
-        database = load_db_from_json_lines("/mnt/d/Git/trabalho-metologias-ageis/documents/tickets.jsonl", "tickets_database")
-    data = database.similarity_search(text_to_search)
+def search_for_similar_tickets(text_to_search):
+    global DATABASE
+    if DATABASE is None:
+        DATABASE = load_db_from_json_lines(DATABASE_LOCATION, DATABASE_NAME)
+    if text_to_search is not str:
+        text_to_search = json.dumps(text_to_search)
+    data = DATABASE.similarity_search(text_to_search)
     tickets = []
     for page in data:
         tickets.append(json.loads(page.page_content))
     return tickets
 
 if __name__ == "__main__":
-    database = load_db_from_json_lines("/mnt/d/Git/trabalho-metologias-ageis/documents/tickets.jsonl", "tickets_database")
-    question = "METHODS-5?"
-    data = database.similarity_search(question)
-    print("Result:", data[0].page_content)
+    DATABASE = load_db_from_json_lines(DATABASE_LOCATION, DATABASE_NAME)
+    text_to_search = "METHODS-5?"
+    tickets = search_for_similar_tickets(text_to_search)
+    tickets_text = build_ticket_text_from_list(tickets)
+    print(tickets_text)

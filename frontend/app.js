@@ -56,6 +56,8 @@ $(document).ready(function() {
             </div>
         `);
 
+        $('#chatBody').scrollTop = $('#chatBody').scrollHeight
+
         //Get response from the backend API
         $.ajax({
             url: backendUrl + '/v1/ask-question',

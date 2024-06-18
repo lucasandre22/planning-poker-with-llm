@@ -23,25 +23,25 @@ TICKETS_SIMILARITY = PromptTemplate(
     You are an AI assistant helping a team estimate a new ticket. The team has identified three similar tickets that can provide context for the new ticket. Based on the details of the similar tickets, provide considerations and guidance for estimating the new ticket.
     The team works in many development projects.
 
-    New Ticket:\n
-    {new_ticket}\n
+    New Ticket:
+    {new_ticket}
 
-    Similar Tickets:\n
-    {similar_tickets}\n\n
+    Similar Tickets:
+    {similar_tickets}
 
     Please provide:
     - A summary of key similarities and differences between the tickets.
-    - Important factors to consider based on the similar tickets.
-    - Potential challenges and complexities that might affect the estimation.
-    - Any additional guidance to help the team make an accurate estimation.
+    - Important factors to consider from and based on the similar tickets.
+    - Potential challenges and complexities from the new ticket that might affect the estimation.
+    - Any additional guidance in all tickets context to help the team make an accurate estimation.
 
     """,
-    input_variables=["ticket", "similar_tickets"]
+    input_variables=["new_ticket", "similar_tickets"]
 )
 
 QUESTION_ANSWERING_PROMPT = PromptTemplate(
     template="""
-    Answer what the user have asked
+    Answer what the user have asked.
     
     Question: \n\n {question} \n\n
     
@@ -50,3 +50,8 @@ QUESTION_ANSWERING_PROMPT = PromptTemplate(
     """,
     input_variables=["question"]
 )
+
+QA_SYSTEM_PROMPT = """You are an assistant for question-answering tasks. \
+If you don't know the answer, just say that you don't know. \
+Use three sentences maximum and keep the answer concise.\
+"""
