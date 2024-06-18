@@ -1,83 +1,56 @@
-# Prompt to generate tickets:
-"""
-Help me generate fake data about a agile team that works with Jira.
-This data will be all the tickets that this team worked previously.
-The jira tikcket is called METHODS-X with X being the number of the ticket.
-Generate json data, one per line, organized like json lines file.
-The json should be estructured like this example:
+# Planning Poker with AI Assistant
 
-{"METHODS-1": {"summary": "", "description": "", "components": ["", ""], "labels": [""], "type": "", "priority": "", "story_points": 0}}
+## Overview
+Planning Poker with AI Assistant is a tool designed to assist software development teams in estimating the effort required for various tasks. The system leverages AI to provide context and guidance based on similar past tickets, improving the accuracy and efficiency of the estimation process.
 
-Here are some explanation for each field:
-Explanation for the "summary" field:
-    A summary of what the issue is about, a short phrase to give you an idea of what the issue is about.
+## Features
+- **Ticket Management**: Create, store, and manage project tickets.
+- **Vectorization**: Convert ticket descriptions into vector representations for similarity search.
+- **Similarity Search**: Find the top 3 most similar tickets using vector similarity.
+- **AI Contextual Assistance**: Generate context and guidance based on similar tickets using an AI model.
+- **Planning Poker Integration**: Integrate AI-generated insights into the planning poker workflow.
+- **Feedback Loop**: Collect feedback on AI suggestions and continuously improve the model.
 
-Explanation for the "description" field:
-    Literally, a description of the issue. Please, simulate this field with detailed descriptions and other not so detailed.
+## Architecture
+The project consists of the following components:
 
-Possible values for "components" field:
-    "frontend react"
-    "frontend angular"
-    "backend node.js"
-    "backend python"
-    "mobile ios"
-    "mobile android"
-    "testing automated"
-    "testing manual"
-    "documentation"
-    "devops docker"
-    "devops kubernetes"
-    "security encryption"
-    "security authentication"
-    "analytics tracking"
-    "integration third-party"
-    "deployment AWS"
-    "deployment Azure"
-    "deployment Google Cloud"
-    "performance monitoring"
-    "UI/UX design"
-    "data migration"
-    "data analysis"
-    "support"
-    "training"
+1. **Frontend**: User interface for creating tickets, viewing similar tickets, and displaying AI-generated context along with conversational chat.
+2. **Backend**: API server for handling requests, integrating with the vector database, and interacting with the AI model.
+3. **Vector Database**: Stores vectorized representations of tickets for similarity search. Implemented with FAISS.
+4. **AI Model**: Generates context and guidance based on similar tickets. Uses mistrallite.
 
-Possible values for "labels" field:
-    "backend"
-    "frontend"
-    "database"
-    "security"
-    "authentication"
-    "authorization"
-    "performance"
-    "optimization"
-    "bug"
-    "feature"
-    "enhancement"
-    "documentation"
-    "user-interface"
-    "user-experience"
-    "testing"
-    "deployment"
-    "maintenance"
-    "refactoring"
-    "integration"
-    "third-party"
-    "workflow"
+## Getting Started
 
-Possible values for "type" field:
-    Bug: A bug is a problem which impairs or prevents the functions of a product.
-    Story: A user story is the smallest unit of work that needs to be done.
-    Task: A task represents work that needs to be done.
-    Improvement: A improvement represents new features added to a product or component that the team develops.
+### Prerequisites
+- Python
+- Ollama
+- NVIDEA graphics card with at least 4 GB VRAM
 
-Possible values for "priority" field:
-    Low: Minor problem easily worked around.
-    Medium: has the potential to affect progress.
-    High: Serious problem that could block progress.
-    Highest: the problem will block progress.
+### Installation
 
-Possible values for story_points field:
-    Story Points are units of measurement that you use to define the complexity of a user story. It follows fibonacci numbers.
+1. **Clone the Repository**
+    ```sh
+    git clone https://github.com/your-username/planning-poker-with-llm.git
+    cd planning-poker-with-llm
+    ```
 
+2. **Install Backend Dependencies**
+    ```sh
+    pip install -r requirements.txt
+    ```
 
-"""
+### Running the Application
+
+1. **Start the Backend Server**
+    ```sh
+    python ./app.py
+    ```
+
+The application should now be running on `http://localhost:5000`.
+
+## Usage
+
+1. **Ticket search**: Enter the ticket id that is currently being estimated and submit it.
+2. **Vectorization and Similarity Search**: The system preprocesses and vectorizes the ticket description, then searches for the top 3 similar tickets and retrieve them as cards.
+3. **AI Contextual Assistance**: The AI model analyzes the similar tickets and generates context and guidance to estimate the new ticket.
+4. **Planning Poker Session**: The AI-generated insights are displayed during the planning poker session to assist the team in estimating the ticket.
