@@ -1,56 +1,77 @@
-# Planning Poker with AI Assistant
+# Planning Poker com Assistente de IA
 
-## Overview
-Planning Poker with AI Assistant is a tool designed to assist software development teams in estimating the effort required for various tasks. The system leverages AI to provide context and guidance based on similar past tickets, improving the accuracy and efficiency of the estimation process.
+## Visão geral
+Projetada como trabalho da disciplina de metodologias ágeis da UTFPR, o Planning Poker com Assistente de IA é uma ferramenta projetada para ajudar equipes de desenvolvimento de software a estimar o esforço necessário para tarefas do Scrum. O sistema utiliza IA para fornecer contexto e orientação com base em tickets semelhantes anteriormente tratados pela equipe, melhorando a precisão e eficiência do processo de estimativa.
 
 ## Features
-- **Ticket Management**: Create, store, and manage project tickets.
-- **Vectorization**: Convert ticket descriptions into vector representations for similarity search.
-- **Similarity Search**: Find the top 3 most similar tickets using vector similarity.
-- **AI Contextual Assistance**: Generate context and guidance based on similar tickets using an AI model.
-- **Planning Poker Integration**: Integrate AI-generated insights into the planning poker workflow.
-- **Feedback Loop**: Collect feedback on AI suggestions and continuously improve the model.
+- **Gerenciamento de Tickets**: Com dados de tickets.
+- **Vectorization**: Converter descrições de tickets em representações vetoriais para busca de similaridade.
+- **Busca por similaridade**: Encontrar os 3 tickets mais semelhantes usando similaridade vetorial, a partir da base de dados FAISS.
+- **Assistência por IA generativa**: Gerar contexto e orientação com base em tickets semelhantes usando a IA generativa, assim como fazer perguntas baseadas no contexto.
+- **Integração com Planning Poker**: Integrar insights gerados pela IA no fluxo de trabalho do Planning Poker.
 
-## Architecture
-The project consists of the following components:
+## Arquitetura
+O projeto consiste nos seguintes componentes:
 
-1. **Frontend**: User interface for creating tickets, viewing similar tickets, and displaying AI-generated context along with conversational chat.
-2. **Backend**: API server for handling requests, integrating with the vector database, and interacting with the AI model.
-3. **Vector Database**: Stores vectorized representations of tickets for similarity search. Implemented with FAISS.
-4. **AI Model**: Generates context and guidance based on similar tickets. Uses mistrallite.
+1. **Frontend**: Interface de usuário para estimativa de tickets via Planning Poker tradicional, possibilidade de visualizar tickets semelhantes e exibir o contexto gerado pela IA juntamente com o chat conversacional.
+2. **Backend**: Servidor API para lidar com requests, integrando-se com o banco de dados vetorial e interagindo com o modelo de IA.
+3. **Vector Database**: Armazena representações vetoriais dos tickets para busca de similaridade. Implementado com FAISS.
+4. **Modelo generativo**: Gera contexto e orientação com base em tickets semelhantes. Pode utilizar qualquer modelo que seja possível rodar com o Ollama.
 
-## Getting Started
+## Primeiros Passos para rodar o projeto
 
-### Prerequisites
-- Python
-- Ollama
-- NVIDEA graphics card with at least 4 GB VRAM
+### Pré-requisitos
+- [Python 3](https://www.python.org/downloads/)
+- [Docker](https://docs.docker.com/get-docker/)
+- [Ollama](https://ollama.com/download)
+- Placa de vídeo NVIDIA com pelo menos 4 GB de VRAM
 
-### Installation
+### Instalando o Ollama
 
-1. **Clone the Repository**
+### Instalação
+
+1. **Clonar o Repositório**
     ```sh
     git clone https://github.com/your-username/planning-poker-with-llm.git
     cd planning-poker-with-llm
     ```
 
-2. **Install Backend Dependencies**
+2. **Instalar Dependências do Backend**
     ```sh
     pip install -r requirements.txt
     ```
 
-### Running the Application
+### Executando a Aplicação
 
-1. **Start the Backend Server**
+1. **Iniciar o container com a base de dados**
+    Abra um novo terminal no projeto e execute o seguinte comando:
     ```sh
-    python ./app.py
+    cd docker && docker-compose up
     ```
 
-The application should now be running on `http://localhost:5000`.
+2. **Popular a base de dados**
+    Caso seja a primeira vez rodando o projeto, é necessário executar o seguinte script:
+    ```sh
+    python ./docker/populate_database.py
+    ```
 
-## Usage
+3. **Iniciar o projeto python**
+    Nesta e nas seguintes execuções, execute o seguinte comando:
+    ```sh
+    cd backend && python ./app.py
+    ```
 
-1. **Ticket search**: Enter the ticket id that is currently being estimated and submit it.
-2. **Vectorization and Similarity Search**: The system preprocesses and vectorizes the ticket description, then searches for the top 3 similar tickets and retrieve them as cards.
-3. **AI Contextual Assistance**: The AI model analyzes the similar tickets and generates context and guidance to estimate the new ticket.
-4. **Planning Poker Session**: The AI-generated insights are displayed during the planning poker session to assist the team in estimating the ticket.
+A aplicação deve estar rodando agora em `http://localhost:5000`.
+
+## Passo a passo de como usar o projeto
+
+1. **Busca de Ticket**: Insira o ID do ticket que está sendo estimado no momento e envie-o.
+![Busca de tickets](./.tutorial_images/busca_de_ticket.png)
+
+2. **Vetorização e Busca por Similaridade**: O sistema obtém as informações do ticket consultando na base de dados SQL e depois, utiliza a base de dados vetorizada para buscar pelos 4 tickets mais semelhantes e os recupera como cartões, monstrando na interface.
+![Vetorização e Busca por Similaridade](./.tutorial_images/vetorizacao_e_busca_por_similaridade.png)
+
+3. **Assistência Contextual de IA**: O modelo de IA analisa os tickets semelhantes e gera contexto e orientação para estimar o novo ticket.
+![Vetorização e Busca por Similaridade](./.tutorial_images/contextualizacao_ia.png)
+
+4. **Sessão de Planning Poker**: Os insights gerados pela IA são exibidos durante a sessão de Planning Poker para ajudar a equipe a estimar o ticket.
