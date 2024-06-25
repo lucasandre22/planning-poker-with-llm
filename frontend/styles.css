@@ -54,7 +54,15 @@ main {
 .cards {
     display: flex;
     justify-content: center;
-    margin-top: 50%;
+    margin-top: 18%;
+}
+
+.table {
+    display: flex;
+    justify-content: center;
+    background-color: brown;
+    height: 30%;
+    width: 50%;
 }
 
 
@@ -71,4 +79,43 @@ main {
 
 .estimate-btn:hover {
     background-color: white;
+}
+
+
+
+.tickets-container {
+    display: flex;
+    justify-content: center;
+    height: 36vh;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+.ticket-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    width: 25%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transform: translateY(20px);
+    animation: fadeInUp 0.5s forwards;
+}
+
+.ticket-card h3 {
+    margin-top: 0;
+    font-size: 20px;
+    color: #333;
+}
+
+.ticket-card {
+    color: #666;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

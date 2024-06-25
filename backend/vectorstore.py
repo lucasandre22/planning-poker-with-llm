@@ -11,7 +11,7 @@ EMBEDDINGS = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 DATABASE = None
 
 DATABASE_LOCATION = "/mnt/d/Git/trabalho-metologias-ageis/documents/tickets.jsonl"
-DATABASE_NAME = "tickets_database"
+DATABASE_NAME = "backend/tickets_database"
 
 def load_db_from_json_lines(file_path, db_name, json_lines=True):
     """Load or create a vector local json lines database by reading the file specified in file_path.
@@ -45,7 +45,7 @@ def search_for_similar_tickets(text_to_search):
         DATABASE = load_db_from_json_lines(DATABASE_LOCATION, DATABASE_NAME)
     if text_to_search is not str:
         text_to_search = json.dumps(text_to_search)
-    data = DATABASE.similarity_search(text_to_search)
+    data = DATABASE.similarity_search(text_to_search, k=4)
     tickets = []
     for page in data:
         tickets.append(json.loads(page.page_content))

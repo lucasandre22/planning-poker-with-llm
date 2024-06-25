@@ -2,7 +2,12 @@
 from vectorstore import search_for_similar_tickets
 from ticket_handling import build_ticket_text, build_ticket_text_from_list
 from llm import CHAIN, QUESTION_ANSWERING_CHAIN, CHAIN_SIMILARITY
+from postgres import get_ticket_from_database
 import time
+import json
+
+first_time_running = True
+context_for_question_answering = ""
 
 def context_definer(data_retrieved_from_similarity_search):
     print("Giving context to llm...")
@@ -28,26 +33,45 @@ def get_closest_fibonacci_number(number):
 
     return sum
 
-def get_response_based_on_ticket(ticket: dict) -> dict:
+def get_response_based_on_ticket(ticket: str) -> dict:
     """_summary_
     Args:
         ticket (str): the ticket to search for similarity
     Returns:
         dict: JSON object containing result and recommended_story_points
     """
-    similar_tickets = search_for_similar_tickets(ticket)
+    global first_time_running
+    global context_for_question_answering
+    print("\nGetting ticket from database")
+    ticket_response = get_ticket_from_database(ticket)
+    
+    print("\nSearching for similar tickets...")
+    similar_tickets = search_for_similar_tickets(json.dumps(ticket_response))
     before = time.time()
     print("\nRunning the model...")
-    result = CHAIN_SIMILARITY.run(new_ticket=build_ticket_text(ticket),
-                                  similar_tickets=build_ticket_text_from_list(similar_tickets))
+    
+    new_ticket = build_ticket_text(ticket_response)
+    similar_tickets_text = build_ticket_text_from_list(similar_tickets)
+    
+    context_for_question_answering = new_ticket + similar_tickets_text
+
+    result = CHAIN_SIMILARITY.run(new_ticket=new_ticket, similar_tickets=similar_tickets_text)
+    
+    first_time_running = True
+    
     print("\nTotal time spent by the model: ", time.time() - before)
-    average = get_story_points_average_from_tickets(similar_tickets)
-    recommended_story_points = str(get_closest_fibonacci_number(average))
+
+    average_story_points = get_story_points_average_from_tickets(similar_tickets)
+    recommended_story_points = str(get_closest_fibonacci_number(average_story_points))
     return {"result": result,
             "recommended_story_points": recommended_story_points,
-            "similar_tickets": [{ "ticket":item["ticket"], "summary":item["summary"], "description":item["description"] } for item in similar_tickets]}
+            "similar_tickets": [{ "ticket":item["ticket"], "summary":item["summary"], "description":item["description"], "story_points":item["story_points"], "type":item["type"] } for item in similar_tickets]}
 
 def get_response_from_question(input) -> dict:
+    global first_time_running
+    if first_time_running:
+        input = input
+        first_time_running = False
     result = QUESTION_ANSWERING_CHAIN.run(input)
     return {"result": result}
 

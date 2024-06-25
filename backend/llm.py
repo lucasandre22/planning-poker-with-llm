@@ -5,13 +5,12 @@ from langchain.chains import LLMChain
 from llm_with_chat_history import LLMWithChatHistory
 from prompts import TICKETS_PROMPT, QUESTION_ANSWERING_PROMPT, TICKETS_SIMILARITY
 
-
-MODEL="mistrallite:latest"
+MODEL="llama3:8b-instruct-q8_0"
 
 llm = Ollama(
     model=MODEL,
-    callback_manager=CallbackManager([StreamingStdOutCallbackHandler()])
-    #base_url="http://172.18.48.1:11434"
+    callback_manager=CallbackManager([StreamingStdOutCallbackHandler()]),
+    temperature=0.3
 )
 
 CHAIN = LLMChain(llm=llm, prompt=TICKETS_PROMPT)

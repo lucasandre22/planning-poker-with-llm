@@ -65,13 +65,13 @@ A aplicação deve estar rodando agora em `http://localhost:5000`.
 
 ## Passo a passo de como usar o projeto
 
-1. **Busca de Ticket**: Insira o ID do ticket que está sendo estimado no momento e envie-o.
+1. **Busca de Ticket**: Insira o ID do ticket que está sendo estimado no momento e envie-o.  \
 ![Busca de tickets](./.tutorial_images/busca_de_ticket.png)
 
-2. **Vetorização e Busca por Similaridade**: O sistema obtém as informações do ticket consultando na base de dados SQL e depois, utiliza a base de dados vetorizada para buscar pelos 4 tickets mais semelhantes e os recupera como cartões, monstrando na interface.
+2. **Vetorização e Busca por Similaridade**: O sistema obtém as informações do ticket consultando na base de dados SQL e depois, utiliza a base de dados vetorizada para buscar pelos 4 tickets mais semelhantes e os recupera como cartões, monstrando na interface.  \
 ![Vetorização e Busca por Similaridade](./.tutorial_images/vetorizacao_e_busca_por_similaridade.png)
 
-3. **Assistência Contextual de IA**: O modelo de IA analisa os tickets semelhantes e gera contexto e orientação para estimar o novo ticket.
+3. **Assistência Contextual de IA**: O modelo de IA analisa os tickets semelhantes e gera contexto e orientação para estimar o novo ticket.  \
 ![Vetorização e Busca por Similaridade](./.tutorial_images/contextualizacao_ia.png)
 
 4. **Sessão de Planning Poker**: Os insights gerados pela IA são exibidos durante a sessão de Planning Poker para ajudar a equipe a estimar o ticket.

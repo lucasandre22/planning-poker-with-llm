@@ -17,20 +17,26 @@
     <main>
         <div class="">
             <div class="row">
-                <div class="col-sm-6">
+                <div class="col-sm-8">
                     <div>
-                        <div class="chat-container">
-                            <form id="chatFormTicket">
-                                <div class="input-group">
-                                    <input type="text" id="chatTicketInput" class="form-control" placeholder="Which ticket are you estimating?">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary btn-send-ai" type="submit">Send</button>
-                                    </div>
+                        <form id="chatFormTicket">
+                            <div class="input-group">
+                                <input type="text" id="ticketInput" class="form-control" placeholder="Enter the ticket name here">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary btn-send-ai" type="submit">Send</button>
                                 </div>
-                                <div class="ai-ticket-response">dasda</div>
-                            </form>
+                            </div>
+                        </form>
+                        <div class="tickets-container">
+                            <div id="ticketsContainer" class="tickets-container">
+                            </div>
+                        </div>
+                        <div id="aiOutput" class="ai-output">
+                            
                         </div>
                     </div>
+                </div>
+                <div class="col-sm-4">
                     <div class="chat-container">
                         <div class="chat-header">
                             <h4>Chat with the AI</h4>
@@ -50,7 +56,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
+                <div class="col-sm-12">
+                    <div class="table">
+                        
+                    </div>
                     <div class="cards">
                         <button class="estimate-btn">1</button>
                         <button class="estimate-btn">2</button>
@@ -88,6 +97,8 @@
     </main>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="app.js"></script>
+    <script src="tickets.js"></script>
 </body>
 </html>

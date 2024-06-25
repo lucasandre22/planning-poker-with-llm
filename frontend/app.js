@@ -2,34 +2,20 @@ $(document).ready(function() {
     $('#chatFormTicket').on('submit', function(e) {
         e.preventDefault();
         const backendUrl = window.location.origin;
-        const ticket = $('#chatInput').val();
-        console.log("ticket");
-        
-        //Get response from the backend API
+        const ticket = $('#ticketInput').val();
+        console.log("ticket:" + ticket);
+
         $.ajax({
-            url: backendUrl + '/v1/get-output',
+            url: 'http://localhost:8080/v1/get-output',
             method: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify({ ticket: message }),
+            data: JSON.stringify({ ticket }),
             crossDomain: true,
             success: function(response) {
-                const aiMessage = response.result;
-                $('#chatBody').children().last().remove();
-                $('#chatBody').append(`
-                    <div class="message ai">
-                        <div class="text">${aiMessage}</div>
-                    </div>
-                `);
-                $('#chatBody').scrollTop($('#chatBody')[0].scrollHeight);
+                displayTickets(response);
             },
             error: function() {
-                $('#chatBody').children().last().remove();
-                $('#chatBody').append(`
-                    <div class="message ai">
-                        <div class="text">Sorry, there was an error processing your request.</div>
-                    </div>
-                `);
-                $('#chatBody').scrollTop($('#chatBody')[0].scrollHeight);
+                console.error('Error fetching tickets:', error);
             }
         });
     });
@@ -87,3 +73,41 @@ $(document).ready(function() {
         });
     });
 });
+
+function displayTickets(data) {
+    const $ticketsContainer = $('#ticketsContainer');
+    $ticketsContainer.empty();
+
+    data.similar_tickets.forEach(ticket => {
+        const $ticketCard = $('<div>').addClass('ticket-card').css({"overflow" : "auto"});
+
+        const $ticketTitle = $('<h3>').text(ticket.ticket);
+
+        const $ticketName = $('<p>').text(`${ticket.summary}`);
+
+        const $ticketDescription = $('<div>').text(`Description: ${ticket.description}`);
+        $ticketDescription.css({"overflow" : "auto"});
+
+        const $link = $('<a>').attr('href', "https://www.google.com.br").text("Open ticket").css({"color": "#4CAF50"});
+
+        const $type = $('<p>').text(`Type: ${ticket.type}`);
+
+        const $story_points = $('<p>').text(`Story points: ${ticket.story_points}`);
+
+
+        $ticketCard.append($ticketTitle, $ticketName, $ticketDescription, $type, $story_points, $link);
+        $ticketsContainer.append($ticketCard);
+    });
+
+    const markdownAiReponse = data.result;
+
+    $('#chatBody').append(`
+        <div class="message ai">
+            <div class="text">${markdownAiReponse}</div>
+        </div>
+    `);
+
+    const recommendedStoryPoints = $('<div>').text(`Recommended story points: ${data.recommended_story_points}`);
+
+}
+
