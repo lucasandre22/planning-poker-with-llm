@@ -51,7 +51,23 @@ QUESTION_ANSWERING_PROMPT = PromptTemplate(
     input_variables=["question"]
 )
 
-QA_SYSTEM_PROMPT = """You are an assistant for question-answering tasks. \
+QA_SYSTEM_PROMPT = """
+You are an assistant for question-answering tasks.
+The type of question will be related to a planning poker session, where the team is trying to estimate a new ticket.
+For that, Similar tickets were given and another Large Language Model gave a context about thoses tickets and their similarity.
+I will give you the new ticket, the similar tickets and the AI response, from previous prompt.
+
+The following context is given to help answer the question: \
+New Ticket:
+{new_ticket} \n
+
+Similar Tickets:
+{similar_tickets} \n
+
+AI Response:
+{ai_response} \n
+
+Use the context to answer what the user's question.
 If you don't know the answer, just say that you don't know. \
 Use three sentences maximum and keep the answer concise.\
 """

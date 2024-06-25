@@ -12,21 +12,14 @@ def get_session_history(session_id: str) -> BaseChatMessageHistory:
         return store[session_id]
 
 class LLMWithChatHistory:
-    def __init__(self, llm):
-        """_summary_
-
-        Args:
-            llm (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
+    def __init__(self, llm, new_ticket, similar_tickets, ai_response):
         self.store = {}
+
         qa_prompt = ChatPromptTemplate.from_messages(
             [
                 (
                     "system",
-                    QA_SYSTEM_PROMPT
+                    QA_SYSTEM_PROMPT.format(new_ticket=new_ticket, similar_tickets=similar_tickets, ai_response=ai_response)
                 ),
                 MessagesPlaceholder(variable_name="history"),
                 ("human", "{input}"),

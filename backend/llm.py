@@ -16,5 +16,3 @@ llm = Ollama(
 CHAIN = LLMChain(llm=llm, prompt=TICKETS_PROMPT)
 
 CHAIN_SIMILARITY = LLMChain(llm=llm, prompt=TICKETS_SIMILARITY)
-
-QUESTION_ANSWERING_CHAIN = LLMWithChatHistory(llm=llm)

@@ -5,6 +5,10 @@ $(document).ready(function() {
         const ticket = $('#ticketInput').val();
         console.log("ticket:" + ticket);
 
+        const $ticketsContainer = $('#ticketsContainer');
+        $ticketsContainer.empty();
+        putLoadingGif();
+
         $.ajax({
             url: 'http://localhost:8080/v1/get-output',
             method: 'POST',
@@ -15,7 +19,8 @@ $(document).ready(function() {
                 displayTickets(response);
             },
             error: function() {
-                console.error('Error fetching tickets:', error);
+                alert('Error fetching tickets, check the connection to backend');
+                removeLoadingGif();
             }
         });
     });
@@ -74,6 +79,29 @@ $(document).ready(function() {
     });
 });
 
+function getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function putLoadingGif() {
+    const $ticketsContainer = $('#ticketsContainer');
+    const $div = $('<div>');
+    const $text = $('<h3>').text("Wait a little bit, the AI needs to think!").css({"text-align" : "center"});
+    const $estimatedTime = $('<p>').text("Estimated time: " + getRandomNumber(23, 45) + " seconds").css({"text-align" : "center"});
+    const $loadingGif = $('<img>', {
+        id: 'mickey loading',
+        src: 'loading.gif',
+        alt: '100'
+    })
+    $div.append($text, $loadingGif, $estimatedTime);
+    $ticketsContainer.append($div);
+}
+
+function removeLoadingGif() {
+    const $ticketsContainer = $('#ticketsContainer');
+    $ticketsContainer.empty();
+}
+
 function displayTickets(data) {
     const $ticketsContainer = $('#ticketsContainer');
     $ticketsContainer.empty();
@@ -90,12 +118,13 @@ function displayTickets(data) {
 
         const $link = $('<a>').attr('href', "https://www.google.com.br").text("Open ticket").css({"color": "#4CAF50"});
 
+        const $space = $('<p>')
         const $type = $('<p>').text(`Type: ${ticket.type}`);
 
         const $story_points = $('<p>').text(`Story points: ${ticket.story_points}`);
 
 
-        $ticketCard.append($ticketTitle, $ticketName, $ticketDescription, $type, $story_points, $link);
+        $ticketCard.append($ticketTitle, $ticketName, $ticketDescription, $space, $type, $story_points, $link);
         $ticketsContainer.append($ticketCard);
     });
 
@@ -110,4 +139,72 @@ function displayTickets(data) {
     const recommendedStoryPoints = $('<div>').text(`Recommended story points: ${data.recommended_story_points}`);
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const cardsContainer = document.querySelector('.cards-container');
+    const tableContent = document.querySelector('.table-content');
+
+    cardsContainer.addEventListener('click', (event) => {
+        if (event.target.classList.contains('card')) {
+            moveCardToTable(event.target);
+        }
+    });
+
+    tableContent.addEventListener('click', (event) => {
+        if (event.target.classList.contains('card')) {
+            moveCardToDeck(event.target);
+        }
+    });
+
+    function moveCardToTable(card) {
+        const rect = card.getBoundingClientRect();
+        const clone = card.cloneNode(true);
+        const tableRect = tableContent.getBoundingClientRect();
+
+        clone.style.position = 'absolute';
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.transition = 'all 1s ease';
+        document.body.appendChild(clone);
+
+        setTimeout(() => {
+            clone.style.top = `${tableRect.top + tableContent.clientHeight / 2 - clone.clientHeight / 2}px`;
+            clone.style.left = `${tableRect.left + tableContent.clientWidth / 2 - clone.clientWidth / 2}px`;
+        }, 10);
+
+        setTimeout(() => {
+            tableContent.appendChild(clone);
+            clone.style.position = 'static';
+            clone.style.top = '';
+            clone.style.left = '';
+            clone.style.transition = '';
+            card.style.visibility = 'hidden';
+        }, 1010);
+    }
+
+    function moveCardToDeck(card) {
+        const rect = card.getBoundingClientRect();
+        const originalCard = [...cardsContainer.children].find(c => c.dataset.number === card.dataset.number);
+
+        const clone = card.cloneNode(true);
+        const cardRect = originalCard.getBoundingClientRect();
+
+        clone.style.position = 'absolute';
+        clone.style.top = `${rect.top}px`;
+        clone.style.left = `${rect.left}px`;
+        clone.style.transition = 'all 1s ease';
+        document.body.appendChild(clone);
+
+        setTimeout(() => {
+            clone.style.top = `${cardRect.top}px`;
+            clone.style.left = `${cardRect.left}px`;
+        }, 10);
+
+        setTimeout(() => {
+            document.body.removeChild(clone);
+            originalCard.style.visibility = 'visible';
+            tableContent.removeChild(card);
+        }, 1010);
+    }
+});
 

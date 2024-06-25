@@ -6,7 +6,7 @@ body {
 }
 
 header {
-    background-color: hsl(122, 99%, 28%);
+    background-color: #0d6efd;
     color: white;
     text-align: center;
     padding: 1em 0;
@@ -67,7 +67,7 @@ main {
 
 
 .estimate-btn {
-    border: 3px solid #4CAF50;
+    border: 3px solid #0d6efd;
     color: #4CAF50;
     padding: 10px 15px;
     margin: 5px;
@@ -103,19 +103,60 @@ main {
     animation: fadeInUp 0.5s forwards;
 }
 
-.ticket-card h3 {
-    margin-top: 0;
-    font-size: 20px;
-    color: #333;
-}
-
-.ticket-card {
-    color: #666;
-}
-
 @keyframes fadeInUp {
     to {
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/*Styles for the table*/
+
+.table {
+    width: 300px;
+    height: 200px;
+    background-color: #8B4513;
+    border: 5px solid #5D3A00;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    position: relative;
+}
+
+.table-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    height: 80%;
+    position: relative;
+}
+
+.card {
+    width: 60px;
+    height: 70px !important;
+    background-color: #FFF;
+    border: 2px solid #000;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.5s ease;
+}
+
+.cards-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+.card:hover {
+    transform: scale(1.1);
 }

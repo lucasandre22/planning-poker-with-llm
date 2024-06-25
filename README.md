@@ -75,3 +75,6 @@ A aplicação deve estar rodando agora em `http://localhost:5000`.
 ![Vetorização e Busca por Similaridade](./.tutorial_images/contextualizacao_ia.png)
 
 4. **Sessão de Planning Poker**: Os insights gerados pela IA são exibidos durante a sessão de Planning Poker para ajudar a equipe a estimar o ticket.
+
+## Arquitetura do sistema em alto nível
+![Vetorização e Busca por Similaridade](./.tutorial_images/arquitetura.png)
